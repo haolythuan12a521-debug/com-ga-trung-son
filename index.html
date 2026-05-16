@@ -5,262 +5,330 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CƠM GÀ TRUNG SƠN - Menu</title>
     <style>
-        :root { --primary: #d32f2f; --secondary: #ffc107; --bg: #f4f4f4; }
+        :root { 
+            --primary: #d32f2f; 
+            --secondary: #ffc107; 
+            --bg: #f4f4f4;
+            --scroll-padding: 130px; 
+        }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 50px; }
         
-        /* Header dính cứng ở trên cùng */
+        /* 1. Header cố định */
         header { 
-            background: var(--primary); 
-            color: white; 
-            text-align: center; 
-            padding: 15px; 
-            border-bottom: 4px solid var(--secondary);
-            position: sticky;
-            top: 0;
-            z-index: 1001; /* Ưu tiên cao nhất */
+            background: var(--primary); color: white; text-align: center; padding: 15px; 
+            border-bottom: 4px solid var(--secondary); position: sticky; top: 0; z-index: 1005; 
         }
-        header p { margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9; font-weight: bold; }
+        header h2 { margin: 0; font-size: 1.4rem; }
+        header p { margin: 5px 0 0; font-size: 0.85rem; opacity: 0.9; font-weight: bold; }
         
-        /* Thanh điều hướng nhanh dính ngay dưới Header */
-        .nav-tabs { 
-            display: flex; 
-            overflow-x: auto; 
-            white-space: nowrap; 
-            background: white; 
-            position: sticky; 
-            top: 72px;        /* Header cao khoảng 72px */
-            z-index: 1000; 
-            padding: 10px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-            gap: 10px; 
-            scrollbar-width: none;
+        /* 2. Thanh menu chính (Cấp 1) - Hiện full 3 thứ tiếng */
+        .nav-main { 
+            display: flex; overflow-x: auto; white-space: nowrap; background: white; 
+            position: sticky; top: 74px; z-index: 1004; padding: 10px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); gap: 10px; scrollbar-width: none;
         }
-        .nav-tabs::-webkit-scrollbar { display: none; }
-        
+        .nav-main::-webkit-scrollbar { display: none; }
+
+        /* 3. Thanh menu phụ (Cấp 2) - Hiện khi có nhiều nhóm con */
+        .nav-sub { 
+            display: flex; overflow-x: auto; white-space: nowrap; background: #fdfdfd; 
+            position: sticky; top: 126px; z-index: 1003; padding: 8px 10px; 
+            gap: 8px; border-bottom: 1px solid #ddd; scrollbar-width: none; 
+            display: none; 
+        }
+        .nav-sub::-webkit-scrollbar { display: none; }
+
         .nav-link { 
-            background: #eee; 
-            padding: 8px 15px; 
-            border-radius: 20px; 
-            text-decoration: none; 
-            color: #333; 
-            font-size: 0.85rem; 
-            font-weight: bold;
+            background: #eee; padding: 7px 15px; border-radius: 20px; 
+            text-decoration: none; color: #333; font-size: 0.85rem; font-weight: bold;
+            cursor: pointer; transition: 0.2s;
         }
+        .nav-link.active { background: var(--primary); color: white; }
 
         .container { padding: 10px; max-width: 600px; margin: auto; }
         
-        /* Khoảng đệm để khi nhảy mục không bị Header che mất */
+        /* 4. Tiêu đề nhóm món ăn - Căn chỉnh khoảng cách cuộn */
         .category-title { 
-            display: block; 
-            font-weight: bold; 
-            color: var(--primary); 
-            margin: 25px 0 10px 5px; 
-            border-left: 4px solid var(--primary); 
-            padding-left: 10px;
-            scroll-margin-top: 130px; /* Trừ hao tổng chiều cao của Header + Nav */
+            display: block; font-weight: bold; color: var(--primary); 
+            margin: 25px 0 10px 5px; border-left: 4px solid var(--primary); padding-left: 10px;
+            scroll-margin-top: var(--scroll-padding); 
         }
 
-        /* Card món ăn dạng chữ gọn gàng */
         .menu-item { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-start; /* Căn lề trên cho tên món dài */
-            background: white; 
-            padding: 12px 15px; 
-            margin-bottom: 10px; 
-            border-radius: 12px; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex; justify-content: space-between; align-items: flex-start;
+            background: white; padding: 12px 15px; margin-bottom: 10px; 
+            border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         .item-info { display: flex; flex-direction: column; gap: 2px; }
         .name-vn { font-weight: 600; color: #222; font-size: 1rem; }
         .name-cn { color: #666; font-size: 0.85rem; }
         .name-en { color: #999; font-style: italic; font-size: 0.8rem; }
-        
-        /* Giá tiền nằm bên phải, căn giữa theo chiều dọc */
-        .item-price { 
-            color: var(--primary); 
-            font-weight: bold; 
-            font-size: 1rem; 
-            align-self: center; 
-            margin-left: 15px;
-            white-space: nowrap; /* Không cho xuống dòng giá tiền */
-        }
+        .item-price { color: var(--primary); font-weight: bold; font-size: 1rem; align-self: center; margin-left: 15px; white-space: nowrap; }
 
-        footer { 
-            background: white; 
-            text-align: center; 
-            padding: 20px; 
-            margin-top: 30px; 
-            border-top: 1px solid #ddd;
-            color: #444;
-            font-size: 0.9rem;
-        }
+        footer { background: white; text-align: center; padding: 20px; margin-top: 30px; border-top: 1px solid #ddd; color: #444; font-size: 0.9rem; }
         footer b { color: var(--primary); }
     </style>
 </head>
 <body>
 
 <header>
-    <h2 style="margin:0">CƠM GÀ TRUNG SƠN</h2>
+    <h2>CƠM GÀ TRUNG SƠN</h2>
     <p>Thời gian mở cửa: 10H - 22H</p>
 </header>
 
-<div class="nav-tabs" id="nav-tabs"></div>
+<div class="nav-main" id="nav-main"></div>
+<div class="nav-sub" id="nav-sub"></div>
 
 <div class="container" id="menu-container"></div>
 
 <footer>
-    <p><b>Địa chỉ:</b> 40-42 Đường 9A, KDC Trung Sơn,X.Bình Hưng,H.Bình Chánh</p>
-    <p><b>Điện thoại:</b> 0938335519 - 0909107754 </p>
+    <p><b>Địa chỉ:</b> 40-42 Đường 9A, KDC Trung Sơn, X.Bình Hưng, H.Bình Chánh</p>
+    <p><b>Điện thoại:</b> 0938335519 - 0909107754</p>
     <p style="font-size: 0.8rem; color: #999;">© 2026 Menu Design by HaoLy</p>
 </footer>
 
 <script>
-    // Dữ liệu món ăn - Đã xóa thuộc tính 'img'
     const menuData = [
-        //gom hết cơm chiên vào một chỗ
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Đùi Gà Xối Mỡ", cn: "脆皮雞腿炒飯", en: "Crispy Chicken Leg Fried Rice", price: "52.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Cánh Gà Xối Mỡ", cn: "脆皮雞翅炒飯", en: "Crispy Chicken Wing Fried Rice", price: "52.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Đùi Gà Mắm Tỏi", cn: "脆皮雞腿大蒜炒飯", en: "Garlic Fried Chicken Leg Fried Rice", price: "55.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Cánh Gà Nước Mắm", cn: "魚露炸雞翅炒飯", en: "Fish Sauce Fried Chicken Wing Fried Rice", price: "55.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Đùi Gà Nước Mắm", cn: "魚露炸雞腿炒飯", en: "Fish Sauce Fried Chicken Leg Fried Rice", price: "55.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Dương Châu", cn: "揚州炒飯", en: "Yang Chow Fried Rice", price: "52.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Xào Thập Cẩm", cn: "什錦炒飯", en: "Combination Fried Rice", price: "55.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Sườn Chiên Xù", cn: "酥炸排骨炒飯", en: "Deep-fried Pork Ribs Fried Rice", price: "55.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Sườn Sốt Chua Ngọt", cn: "酸甜排骨炒飯", en: "Sweet and Sour Pork Ribs Fried Rice", price: "58.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Xào Cật", cn: "洋蔥豬腰炒飯", en: "Stir-fried Pork Kidney Fried Rice", price: "58.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Bò Xào Saté", cn: "沙嗲牛肉炒飯", en: "Spicy Sate Beef Fried Rice", price: "55.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Bò Xào Hành Tây", cn: "洋蔥牛肉炒飯", en: "Stir-fried Beef with Onion Fried Rice", price: "55.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Bò Xào Giá Hẹ", cn: "銀韭菜牛肉炒飯", en: "Stir-fried Beef with Chives Fried Rice", price: "55.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Bò Lúc Lắc", cn: "牛肉粒炒飯", en: "Shaking Beef Fried Rice", price: "55.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Bò Xào Cải Chua", cn: "牛肉酸菜炒飯", en: "Stir-fried Beef with Pickled Mustard Fried Rice", price: "55.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Gân Bò Saté", cn: "牛筋沙嗲炒飯", en: "Spicy Sate Beef Tendon Fried Rice", price: "55.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Cá Mặn", cn: "咸魚炒飯", en: "Salted Fish Fried Rice", price: "58.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Hải Sản", cn: "海鮮炒飯", en: "Seafood Fried Rice", price: "58.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Trứng Muối Hải Sản", cn: "金沙海鮮炒飯", en: "Salted Egg Seafood Fried Rice", price: "60.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Mã Lai", cn: "馬來式炒飯", en: "Malay Style Fried Rice", price: "60.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Mực Xào Saté", cn: "沙嗲鮮魷炒飯", en: "Spicy Sate Squid Fried Rice", price: "60.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Mực Xào Chua Ngọt", cn: "酸甜鮮魷炒飯", en: "Sweet and Sour Squid Fried Rice", price: "60.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Tôm", cn: "鮮蝦炒飯", en: "Shrimp Fried Rice", price: "60.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Xào Hải Sản", cn: "海鮮炒飯", en: "Stir-fried Seafood Fried Rice", price: "65.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Thịt Cua", cn: "鮮蟹肉炒飯", en: "Crab Meat Fried Rice", price: "70.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Ếch Nước Mắm", cn: "魚露炸田雞炒飯", en: "Fish Sauce Fried Frog Fried Rice", price: "60.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Ếch Xào Saté", cn: "炸田雞沙嗲炒飯", en: "Spicy Sate Fried Frog Fried Rice", price: "60.000đ" },
-        { cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Thêm", cn: "加飯", en: "Extra Rice", price: "10.000đ" },
-        //Cơm Hấp
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà Hải Nam", cn: "海南雞飯", en: "Hainanese Chicken Rice", price: "58.000đ" },
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Đùi Gà Hải Nam", cn: "海南雞腿飯", en: "Hainanese Chicken Leg Rice", price: "65.000đ" },
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Xá Xíu", cn: "蜜汁叉燒飯", en: "Char Siu Rice", price: "58.000đ" },
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Phá Lấu", cn: "滷味飯", en: "Braised Meat Rice", price: "58.000đ" },
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Heo Quay", cn: "花皮燒肉飯", en: "Roasted Pork Rice", price: "58.000đ" },
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Vịt Quay", cn: "脆皮燒鴨飯", en: "Roasted Duck Rice", price: "60.000đ" },
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Đùi Vịt Quay", cn: "脆皮鴨腿飯", en: "Roasted Duck Leg Rice", price: "68.000đ" },
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà + Xá Xíu", cn: "叉燒雞飯", en: "Chicken & Char Siu Rice", price: "68.000đ" },
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà + Phá Lấu", cn: "滷味雞飯", en: "Chicken & Braised Meat Rice", price: "68.000đ" },
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà + Heo Quay", cn: "燒肉雞飯", en: "Chicken & Roasted Pork Rice", price: "68.000đ" },
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà + Vịt Quay", cn: "燒鴨雞飯", en: "Chicken & Roasted Duck Rice", price: "75.000đ" },
-        { cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà Thập Cẩm", cn: "什錦海南雞飯", en: "Combination Hainanese Chicken Rice", price: "115.000đ" },
-        // Hủ tiếu
-        { cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Xào Thập Cẩm", cn: "什錦炒河粉", en: "Combination Stir-fried Rice Noodles", price: "55.000đ" },
-        { cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Xào Bò", cn: "牛肉炒河粉", en: "Stir-fried Rice Noodles with Beef", price: "55.000đ" },
-        { cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Hải Sản", cn: "海鮮炒河粉", en: "Stir-fried Rice Noodles with Seafood", price: "65.000đ" },
-        { cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Áp Chảo Giá Hẹ", cn: "銀芽韭菜炒河粉", en: "Stir-fried Rice Noodles with Chives & Bean Sprouts", price: "40.000đ" },
-        { cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Áp Chảo Xào Thập Cẩm", cn: "乾炒什錦河粉", en: "Pan-fried Rice Noodles with Combination", price: "55.000đ" },
-        { cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Áp Chảo Xào Bò", cn: "乾炒牛河粉", en: "Pan-fried Rice Noodles with Beef", price: "55.000đ" },
-        { cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Áp Chảo Xào Hải Sản", cn: "乾炒海鮮河粉", en: "Pan-fried Rice Noodles with Seafood", price: "65.000đ" },
+        // --- NHÓM CƠM CHIÊN (1 nhóm con -> Không hiện menu phụ) ---
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Cánh Gà Xối Mỡ", cn: "脆皮雞翅炒飯", en: "Crispy Chicken Wing Fried Rice", price: "52.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Đùi Gà Mắm Tỏi", cn: "脆皮雞腿大蒜炒飯", en: "Garlic Fried Chicken Leg Fried Rice", price: "55.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Cánh Gà Nước Mắm", cn: "魚露炸雞翅炒飯", en: "Fish Sauce Fried Chicken Wing Fried Rice", price: "55.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Đùi Gà Nước Mắm", cn: "魚露炸雞腿炒飯", en: "Fish Sauce Fried Chicken Leg Fried Rice", price: "55.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Dương Châu", cn: "揚州炒飯", en: "Yang Chow Fried Rice", price: "52.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Xào Thập Cẩm", cn: "什錦炒飯", en: "Combination Fried Rice", price: "55.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Sườn Chiên Xù", cn: "酥炸排骨炒飯", en: "Deep-fried Pork Ribs Fried Rice", price: "55.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Sườn Sốt Chua Ngọt", cn: "酸甜排骨炒飯", en: "Sweet and Sour Pork Ribs Fried Rice", price: "58.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Xào Cật", cn: "洋蔥豬腰炒飯", en: "Stir-fried Pork Kidney Fried Rice", price: "58.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Bò Xào Saté", cn: "沙嗲牛肉炒飯", en: "Spicy Sate Beef Fried Rice", price: "55.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Bò Xào Hành Tây", cn: "洋蔥牛肉炒飯", en: "Stir-fried Beef with Onion Fried Rice", price: "55.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Bò Xào Giá Hẹ", cn: "銀韭菜牛肉炒飯", en: "Stir-fried Beef with Chives Fried Rice", price: "55.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Bò Lúc Lắc", cn: "牛肉粒炒飯", en: "Shaking Beef Fried Rice", price: "55.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Bò Xào Cải Chua", cn: "牛肉酸菜炒飯", en: "Stir-fried Beef with Pickled Mustard Fried Rice", price: "55.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Gân Bò Saté", cn: "牛筋沙嗲炒飯", en: "Spicy Sate Beef Tendon Fried Rice", price: "55.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Cá Mặn", cn: "咸魚炒飯", en: "Salted Fish Fried Rice", price: "58.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Hải Sản", cn: "海鮮炒飯", en: "Seafood Fried Rice", price: "58.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Trứng Muối Hải Sản", cn: "金沙海鮮炒飯", en: "Salted Egg Seafood Fried Rice", price: "60.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Mã Lai", cn: "馬來式炒飯", en: "Malay Style Fried Rice", price: "60.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Mực Xào Saté", cn: "沙嗲鮮魷炒飯", en: "Spicy Sate Squid Fried Rice", price: "60.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Mực Xào Chua Ngọt", cn: "酸甜鮮魷炒飯", en: "Sweet and Sour Squid Fried Rice", price: "60.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Tôm", cn: "鮮蝦炒飯", en: "Shrimp Fried Rice", price: "60.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Xào Hải Sản", cn: "海鮮炒飯", en: "Stir-fried Seafood Fried Rice", price: "65.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Thịt Cua", cn: "鮮蟹肉炒飯", en: "Crab Meat Fried Rice", price: "70.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Ếch Nước Mắm", cn: "魚露炸田雞炒飯", en: "Fish Sauce Fried Frog Fried Rice", price: "60.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Chiên Ếch Xào Saté", cn: "炸田雞沙嗲炒飯", en: "Spicy Sate Fried Frog Fried Rice", price: "60.000đ" },
+        { parent: "CƠM CHIÊN / 炒飯 / Fried Rice", cat: "CƠM CHIÊN / 炒飯 / Fried Rice", vn: "Cơm Thêm", cn: "加飯", en: "Extra Rice", price: "10.000đ" },
+       
+
+        // --- NHÓM CƠM GÀ (1 nhóm con -> Không hiện menu phụ) ---
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà Hải Nam", cn: "海南雞飯", en: "Hainanese Chicken Rice", price: "58.000đ" },
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Đùi Gà Hải Nam", cn: "海南雞腿飯", en: "Hainanese Chicken Leg Rice", price: "65.000đ" },
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Xá Xíu", cn: "蜜汁叉燒飯", en: "Char Siu Rice", price: "58.000đ" },
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Phá Lấu", cn: "滷味飯", en: "Braised Meat Rice", price: "58.000đ" },
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Heo Quay", cn: "花皮燒肉飯", en: "Roasted Pork Rice", price: "58.000đ" },
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Vịt Quay", cn: "脆皮燒鴨飯", en: "Roasted Duck Rice", price: "60.000đ" },
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Đùi Vịt Quay", cn: "脆皮鴨腿飯", en: "Roasted Duck Leg Rice", price: "68.000đ" },
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà + Xá Xíu", cn: "叉燒雞飯", en: "Chicken & Char Siu Rice", price: "68.000đ" },
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà + Phá Lấu", cn: "滷味雞飯", en: "Chicken & Braised Meat Rice", price: "68.000đ" },
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà + Heo Quay", cn: "燒肉雞飯", en: "Chicken & Roasted Pork Rice", price: "68.000đ" },
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà + Vịt Quay", cn: "燒鴨雞飯", en: "Chicken & Roasted Duck Rice", price: "75.000đ" },
+        { parent: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice",cat: "CƠM GÀ HẢI NAM / 海南雞飯 / Hainanese Chicken Rice", vn: "Cơm Gà Thập Cẩm", cn: "什錦海南雞飯", en: "Combination Hainanese Chicken Rice", price: "115.000đ" },
+// Hủ tiếu
+        { parent: "HỦ TIẾU / 河粉 / RICE NOODLES",cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Xào Thập Cẩm", cn: "什錦炒河粉", en: "Combination Stir-fried Rice Noodles", price: "55.000đ" },
+        { parent: "HỦ TIẾU / 河粉 / RICE NOODLES",cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Xào Bò", cn: "牛肉炒河粉", en: "Stir-fried Rice Noodles with Beef", price: "55.000đ" },
+        { parent: "HỦ TIẾU / 河粉 / RICE NOODLES",cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Hải Sản", cn: "海鮮炒河粉", en: "Stir-fried Rice Noodles with Seafood", price: "65.000đ" },
+        { parent: "HỦ TIẾU / 河粉 / RICE NOODLES",cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Áp Chảo Giá Hẹ", cn: "銀芽韭菜炒河粉", en: "Stir-fried Rice Noodles with Chives & Bean Sprouts", price: "40.000đ" },
+        { parent: "HỦ TIẾU / 河粉 / RICE NOODLES",cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Áp Chảo Xào Thập Cẩm", cn: "乾炒什錦河粉", en: "Pan-fried Rice Noodles with Combination", price: "55.000đ" },
+        { parent: "HỦ TIẾU / 河粉 / RICE NOODLES",cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Áp Chảo Xào Bò", cn: "乾炒牛河粉", en: "Pan-fried Rice Noodles with Beef", price: "55.000đ" },
+        { parent: "HỦ TIẾU / 河粉 / RICE NOODLES",cat: "HỦ TIẾU / 河粉 / RICE NOODLES", vn: "Hủ Tiếu Áp Chảo Xào Hải Sản", cn: "乾炒海鮮河粉", en: "Pan-fried Rice Noodles with Seafood", price: "65.000đ" },
+
         // Mì
-        { cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Giòn Xào Thập Cẩm", cn: "什錦炸麵", en: "Crispy Egg Noodles with Combination", price: "55.000đ" },
-        { cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Giòn Xào Bò", cn: "牛肉炸麵", en: "Crispy Egg Noodles with Beef", price: "55.000đ" },
-        { cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Giòn Xào Hải Sản", cn: "海鮮炸麵", en: "Crispy Egg Noodles with Seafood", price: "65.000đ" },
-        { cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Mềm Xào Thập Cẩm", cn: "什錦炒麵", en: "Soft Egg Noodles with Combination", price: "55.000đ" },
-        { cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Mềm Xào Bò", cn: "牛肉炒麵", en: "Soft Egg Noodles with Beef", price: "55.000đ" },
-        { cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Mềm Xào Hải Sản", cn: "海鮮炒麵", en: "Soft Egg Noodles with Seafood", price: "65.000đ" },
-        { cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Mềm Xào Xá Xíu", cn: "叉燒炒麵", en: "Soft Egg Noodles with Char Siu", price: "58.000đ" },
-        { cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Mềm Xào Giá Hẹ", cn: "銀芽韭菜炒麵", en: "Soft Egg Noodles with Chives & Bean Sprouts", price: "40.000đ" },
+        { parent: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES",cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Giòn Xào Thập Cẩm", cn: "什錦炸麵", en: "Crispy Egg Noodles with Combination", price: "55.000đ" },
+        { parent: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES",cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Giòn Xào Bò", cn: "牛肉炸麵", en: "Crispy Egg Noodles with Beef", price: "55.000đ" },
+        { parent: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES",cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Giòn Xào Hải Sản", cn: "海鮮炸麵", en: "Crispy Egg Noodles with Seafood", price: "65.000đ" },
+        { parent: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES",cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Mềm Xào Thập Cẩm", cn: "什錦炒麵", en: "Soft Egg Noodles with Combination", price: "55.000đ" },
+        { parent: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES",cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Mềm Xào Bò", cn: "牛肉炒麵", en: "Soft Egg Noodles with Beef", price: "55.000đ" },
+        { parent: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES",cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Mềm Xào Hải Sản", cn: "海鮮炒麵", en: "Soft Egg Noodles with Seafood", price: "65.000đ" },
+        { parent: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES",cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Mềm Xào Xá Xíu", cn: "叉燒炒麵", en: "Soft Egg Noodles with Char Siu", price: "58.000đ" },
+        { parent: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES",cat: "MÌ GIÒN & MÌ MỀM / 炸麵 & 麵條 / CRISPY & SOFT NOODLES", vn: "Mì Mềm Xào Giá Hẹ", cn: "銀芽韭菜炒麵", en: "Soft Egg Noodles with Chives & Bean Sprouts", price: "40.000đ" },
+
         //NHÓM NUI
-        { cat: "NUI / 通心粉 / MACARONI", vn: "Nui Xào Thập Cẩm", cn: "什錦洋蔥炒通心粉", en: "Combination Stir-fried Macaroni", price: "55.000đ" },
-        { cat: "NUI / 通心粉 / MACARONI", vn: "Nui Xào Bò", cn: "牛肉洋蔥炒通心粉", en: "Stir-fried Macaroni with Beef", price: "55.000đ" },
-        { cat: "NUI / 通心粉 / MACARONI", vn: "Nui Xào Bò Lúc Lắc", cn: "牛肉粒炒通心粉", en: "Shaking Beef with Macaroni", price: "55.000đ" },
-        { cat: "NUI / 通心粉 / MACARONI", vn: "Nui Xào Cật", cn: "豬腰炒通心粉", en: "Stir-fried Macaroni with Pork Kidney", price: "58.000đ" },
-        { cat: "NUI / 通心粉 / MACARONI", vn: "Nui Xào Hải Sản", cn: "海鮮炒通心粉", en: "Stir-fried Macaroni with Seafood", price: "65.000đ" },
+        { parent: "NUI / 通心粉 / MACARONI",cat: "NUI / 通心粉 / MACARONI", vn: "Nui Xào Thập Cẩm", cn: "什錦洋蔥炒通心粉", en: "Combination Stir-fried Macaroni", price: "55.000đ" },
+        { parent: "NUI / 通心粉 / MACARONI",cat: "NUI / 通心粉 / MACARONI", vn: "Nui Xào Bò", cn: "牛肉洋蔥炒通心粉", en: "Stir-fried Macaroni with Beef", price: "55.000đ" },
+        { parent: "NUI / 通心粉 / MACARONI",cat: "NUI / 通心粉 / MACARONI", vn: "Nui Xào Bò Lúc Lắc", cn: "牛肉粒炒通心粉", en: "Shaking Beef with Macaroni", price: "55.000đ" },
+        { parent: "NUI / 通心粉 / MACARONI",cat: "NUI / 通心粉 / MACARONI", vn: "Nui Xào Cật", cn: "豬腰炒通心粉", en: "Stir-fried Macaroni with Pork Kidney", price: "58.000đ" },
+        { parent: "NUI / 通心粉 / MACARONI",cat: "NUI / 通心粉 / MACARONI", vn: "Nui Xào Hải Sản", cn: "海鮮炒通心粉", en: "Stir-fried Macaroni with Seafood", price: "65.000đ" },
         //NHÓM BÚN GẠO
-        { cat: "BÚN GẠO / 米粉 / RICE VERMICELLI", vn: "Bún Gạo Xào Thập Cẩm", cn: "什錦炒米粉", en: "Combination Stir-fried Rice Vermicelli", price: "55.000đ" },
-        { cat: "BÚN GẠO / 米粉 / RICE VERMICELLI", vn: "Bún Gạo Xào Bò", cn: "牛肉炒米粉", en: "Stir-fried Rice Vermicelli with Beef", price: "55.000đ" },
-        { cat: "BÚN GẠO / 米粉 / RICE VERMICELLI", vn: "Bún Gạo Xào Hải Sản", cn: "海鮮炒米粉", en: "Stir-fried Rice Vermicelli with Seafood", price: "65.000đ" },
+        { parent: "BÚN GẠO / 米粉 / RICE VERMICELLI",cat: "BÚN GẠO / 米粉 / RICE VERMICELLI", vn: "Bún Gạo Xào Thập Cẩm", cn: "什錦炒米粉", en: "Combination Stir-fried Rice Vermicelli", price: "55.000đ" },
+        { parent: "BÚN GẠO / 米粉 / RICE VERMICELLI",cat: "BÚN GẠO / 米粉 / RICE VERMICELLI", vn: "Bún Gạo Xào Bò", cn: "牛肉炒米粉", en: "Stir-fried Rice Vermicelli with Beef", price: "55.000đ" },
+        { parent: "BÚN GẠO / 米粉 / RICE VERMICELLI",cat: "BÚN GẠO / 米粉 / RICE VERMICELLI", vn: "Bún Gạo Xào Hải Sản", cn: "海鮮炒米粉", en: "Stir-fried Rice Vermicelli with Seafood", price: "65.000đ" },
         //NHÓM MIẾN
-        { cat: "MIẾN / 粉絲 / GLASS NOODLES", vn: "Miến Xào Bò", cn: "牛肉炒粉絲", en: "Stir-fried Glass Noodles with Beef", price: "60.000đ" },
-        { cat: "MIẾN / 粉絲 / GLASS NOODLES", vn: "Miến Xào Hải Sản", cn: "海鮮炒粉絲", en: "Stir-fried Glass Noodles with Seafood", price: "70.000đ" },
-        { cat: "MIẾN / 粉絲 / GLASS NOODLES", vn: "Miến Xào Thịt Cua", cn: "鮮蟹肉炒粉絲", en: "Stir-fried Glass Noodles with Crab Meat", price: "75.000đ" },
-        //SÚP 
+        { parent: "MIẾN / 粉絲 / GLASS NOODLES",cat: "MIẾN / 粉絲 / GLASS NOODLES", vn: "Miến Xào Bò", cn: "牛肉炒粉絲", en: "Stir-fried Glass Noodles with Beef", price: "60.000đ" },
+        { parent: "MIẾN / 粉絲 / GLASS NOODLES",cat: "MIẾN / 粉絲 / GLASS NOODLES", vn: "Miến Xào Hải Sản", cn: "海鮮炒粉絲", en: "Stir-fried Glass Noodles with Seafood", price: "70.000đ" },
+        { parent: "MIẾN / 粉絲 / GLASS NOODLES",cat: "MIẾN / 粉絲 / GLASS NOODLES", vn: "Miến Xào Thịt Cua", cn: "鮮蟹肉炒粉絲", en: "Stir-fried Glass Noodles with Crab Meat", price: "75.000đ" },
+
+        // 4. RAU XÀO / 炒菜 / Stir-fried Vegetables
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Xà Lách Dầu Giấm", cn: "油醋沙拉", en: "Salad with Vinaigrette", price: "45.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Rau Muống Xào Tỏi", cn: "蒜炒空心菜", en: "Stir-fried Water Spinach with Garlic", price: "45.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Rau Muống Xào Chao", cn: "豆腐乳炒空心菜", en: "Stir-fried Water Spinach with Bean Curd", price: "45.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Cải Ngọt Xào Tỏi", cn: "蒜炒小松菜", en: "Stir-fried Sweet Mustard with Garlic", price: "45.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Mướp Xào Tỏi", cn: "蒜炒絲瓜", en: "Stir-fried Luffa with Garlic", price: "50.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Cà Tím Xào Tỏi", cn: "蒜炒茄子", en: "Stir-fried Eggplant with Garlic", price: "50.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Bông Cải Xào Tỏi", cn: "蒜炒綠菜花", en: "Stir-fried Broccoli with Garlic", price: "55.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Cải Bó Xôi Xào Tỏi", cn: "蒜頭炒菠菜", en: "Stir-fried Spinach with Garlic", price: "55.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Cải Ngọt Xào Thập Cẩm", cn: "什錦炒小松菜", en: "Combination Stir-fried Sweet Mustard", price: "90.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Cải Ngọt Xào Hải Sản", cn: "海鮮炒小松菜", en: "Stir-fried Sweet Mustard with Seafood", price: "110.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Bông Cải Xào Hải Sản", cn: "海鮮炒綠菜花", en: "Stir-fried Broccoli with Seafood", price: "115.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Giá Hẹ Xào Sate", cn: "銀芽韭菜炒沙嗲", en: "Stir-fried Bean Sprouts & Chives with Sate", price: "45.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Giá Hẹ Xào Bò", cn: "銀芽韭菜炒牛肉", en: "Stir-fried Bean Sprouts & Chives with Beef", price: "100.000đ" },
+        { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Giá Hẹ Xào Hải Sản", cn: "銀芽韭菜炒海鮮", en: "Stir-fried Bean Sprouts & Chives with Seafood", price: "110.000đ" },
+        // --- NHÓM THỨC ĂN THÊM (Nhiều nhóm con -> Tự động hiện menu phụ) ---
+        // 5. TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Trứng Chiên Cà Chua Thịt Bằm", cn: "碎肉蕃茄炒蛋", en: "Tomato & Egg Omelet with Minced Pork", price: "50.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Khổ Qua Xào Trứng", cn: "苦瓜炒蛋", en: "Stir-fried Bitter Melon with Egg", price: "50.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Trứng Chiên Tôm", cn: "鮮蝦炒蛋", en: "Shrimp Omelet", price: "70.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Lòng Gà Trứng Non Xào Mướp", cn: "絲瓜炒雞雜", en: "Stir-fried Chicken Giblets with Luffa", price: "80.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Lòng Gà Trứng Non Xào Giá Hẹ", cn: "銀芽韭菜炒雞雜", en: "Stir-fried Chicken Giblets with Bean Sprouts", price: "80.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Cánh Gà Chiên Nước Mắm", cn: "魚露炸雞翅", en: "Fish Sauce Fried Chicken Wings", price: "90.000đ" },
+
+        // 6. MÓN SƯỜN / 排骨 / Pork Ribs
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN SƯỜN / 排骨 / Pork Ribs", vn: "Sườn Non Rang Muối", cn: "椒鹽排骨", en: "Salt & Pepper Pork Ribs", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN SƯỜN / 排骨 / Pork Ribs", vn: "Sườn Sốt Chua Ngọt", cn: "酸甜排骨", en: "Sweet & Sour Pork Ribs", price: "95.000đ" },
+
+        // 7. MÓN BÒ / 牛肉 / Beef
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Sate", cn: "沙嗲牛肉", en: "Stir-fried Beef with Sate", price: "90.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Hành Tây", cn: "洋蔥炒牛肉", en: "Stir-fried Beef with Onions", price: "90.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Cải Chua", cn: "酸菜炒牛肉", en: "Stir-fried Beef with Pickled Mustard", price: "90.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Khổ Qua", cn: "苦瓜炒牛肉", en: "Stir-fried Beef with Bitter Melon", price: "90.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Giá Hẹ", cn: "銀芽韭菜炒牛肉", en: "Stir-fried Beef with Bean Sprouts & Chives", price: "90.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Bông Cải", cn: "綠菜花炒牛肉", en: "Stir-fried Beef with Broccoli", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Cải Bó Xôi", cn: "菠菜炒牛肉", en: "Stir-fried Beef with Spinach", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Lúc Lắc Khoai Tây", cn: "牛肉粒和炸薯條", en: "Shaking Beef with French Fries", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Gân Bò Xào Sate", cn: "牛筋沙嗲", en: "Stir-fried Beef Tendon with Sate", price: "95.000đ" },
+
+        // 8. CẬT HEO / 豬腰 / Pork Kidney
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Xào Sate", cn: "沙嗲炒豬腰", en: "Stir-fried Pork Kidney with Sate", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Xào Hành Gừng", cn: "姜蔥炒豬腰", en: "Stir-fried Pork Kidney with Ginger & Onions", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Xào Bông Cải", cn: "綠菜花炒豬腰", en: "Stir-fried Pork Kidney with Broccoli", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Cháy Tỏi", cn: "蒜香炒豬腰", en: "Stir-fried Pork Kidney with Garlic", price: "95.000đ" },
+
+        // 9. MỰC / 鮮魷 / Squid
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Chiên Giòn", cn: "脆炸鮮魷", en: "Crispy Fried Squid", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Sate", cn: "沙嗲炒鮮魷", en: "Stir-fried Squid with Sate", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Hành Cần", cn: "芹菜炒鮮魷", en: "Stir-fried Squid with Celery", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Dưa Leo", cn: "黃瓜炒鮮魷", en: "Stir-fried Squid with Cucumber", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Chua Ngọt", cn: "酸甜炒鮮魷", en: "Sweet & Sour Stir-fried Squid", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Rang Muối", cn: "椒鹽鮮魷", en: "Salt & Pepper Squid", price: "110.000đ" },
+
+        // 10. TÔM / 鮮蝦 / Shrimp
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TÔM / 鮮蝦 / Shrimp", vn: "Tôm Lăn Bột", cn: "吉利蝦", en: "Fried Breaded Shrimp", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TÔM / 鮮蝦 / Shrimp", vn: "Tôm Xào Sate", cn: "沙嗲炒鮮蝦", en: "Stir-fried Shrimp with Sate", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TÔM / 鮮蝦 / Shrimp", vn: "Tôm Rang Muối", cn: "椒鹽鮮蝦", en: "Salt & Pepper Shrimp", price: "110.000đ" },
+
+        // 11. ẾCH / 田雞 / Frog
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Chiên Giòn", cn: "脆炸田雞", en: "Crispy Fried Frog", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Xào Sate", cn: "沙嗲炒田雞", en: "Stir-fried Frog with Sate", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Xào Mướp", cn: "絲瓜炒田雞", en: "Stir-fried Frog with Luffa", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Chiên Nước Mắm", cn: "魚露炸田雞", en: "Fish Sauce Fried Frog", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Rang Muối", cn: "椒鹽田雞", en: "Salt & Pepper Frog", price: "105.000đ" },
+
+        // 12. ĂN CHAY / 素食 / Vegetarian
+        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Cơm Trắng Xào Chay", cn: "羅漢齋配米飯", en: "Vegetarian Stir-fry with Rice", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Cơm Chiên Xào Chay", cn: "羅漢齋炒飯", en: "Vegetarian Fried Rice", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Bún Gạo Xào Chay", cn: "羅漢齋炒米粉", en: "Vegetarian Stir-fried Rice Vermicelli", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Hủ Tiếu Xào Chay", cn: "羅漢齋炒河粉", en: "Vegetarian Stir-fried Rice Noodles", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Hủ Tiếu Áp Chảo Xào Chay", cn: "羅漢齋乾炒河粉", en: "Vegetarian Pan-fried Rice Noodles", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Mì Mềm Xào Chay", cn: "羅漢齋炒麵", en: "Vegetarian Soft Egg Noodles", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Mì Giòn Xào Chay", cn: "羅漢齋炸麵", en: "Vegetarian Crispy Egg Noodles", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Miến Xào Chay", cn: "羅漢齋炒粉絲", en: "Vegetarian Stir-fried Glass Noodles", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Đậu Hủ Xào Thập Cẩm Chay", cn: "什錦羅漢齋", en: "Combination Vegetarian Tofu", price: "80.000đ" },
+        
         // NHÓM SÚP (Gồm Canh Nấu, Canh Hầm và Súp)
-        { cat: "SÚP / 湯 / Soup", vn: "Canh Rong Biển Thịt Bằm", cn: "碎肉紫菜湯", en: "Seaweed Soup with Minced Pork", price: "15k - 35k" },
-        { cat: "SÚP / 湯 / Soup", vn: "Canh Cải Ngọt Thịt Bằm", cn: "碎肉小松菜湯", en: "Sweet Mustard Soup with Minced Pork", price: "15k - 35k" },
-        { cat: "SÚP / 湯 / Soup", vn: "Canh Trứng Cà Chua Thịt Bằm", cn: "蕃茄蛋花湯", en: "Tomato & Egg Soup with Minced Pork", price: "15k - 35k" }, 
-        { cat: "SÚP / 湯 / Soup", vn: "Canh Khổ Qua Thịt Bằm", cn: "碎肉苦瓜湯", en: "Bitter Melon Soup with Minced Pork", price: "15k - 35k" },
-        { cat: "SÚP / 湯 / Soup", vn: "Canh Xà Lách Xoong Thịt Bằm", cn: "碎肉西洋菜湯", en: "Watercress Soup with Minced Pork", price: "15k - 35k" },
-        { cat: "SÚP / 湯 / Soup", vn: "Đuôi Heo Hầm Củ Sen", cn: "蓮藕豬尾湯", en: "Pork Tail Soup with Lotus Root", price: "45k - 70k" },
-        { cat: "SÚP / 湯 / Soup", vn: "Bao Tử Hầm Chân Gà", cn: "豬肚雞腳湯", en: "Pork Stomach Soup with Chicken Feet", price: "45k - 70k" },
-        { cat: "SÚP / 湯 / Soup", vn: "Bắp Bò Tiềm Thuốc Bắc", cn: "藥材燉牛展湯", en: "Stewed Beef Shank with Herbal", price: "50k - 75k" }, 
-        { cat: "SÚP / 湯 / Soup", vn: "Gà Ác Tiềm Thuốc Bắc", cn: "藥材燉烏雞湯", en: "Stewed Black Bone Chicken with Herbal", price: "55k - 85k" },
-        { cat: "SÚP / 湯 / Soup", vn: "Súp Hải Sản", cn: "海鮮羹", en: "Seafood Soup", price: "40.000đ" },
-        { cat: "SÚP / 湯 / Soup", vn: "Súp Cua Bong Bóng Cá", cn: "魚肚蟹肉羹", en: "Crab and Fish Maw Soup", price: "40.000đ" },
-        { cat: "SÚP & MÓN ĂN THÊM / 羹 & 其它 / SOUP & SIDES", vn: "Khoai Tây Chiên", cn: "炸薯條", en: "French Fries", price: "40.000đ" },
-        { cat: "SÚP & MÓN ĂN THÊM / 羹 & 其它 / SOUP & SIDES", vn: "Chả Giò Tiều Châu", cn: "潮州春卷", en: "Chaozhou Spring Rolls", price: "95.000đ" },
-
-        // THỨC ĂN THÊM
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings", cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Trứng Chiên Cà Chua Thịt Bằm", cn: "碎肉蕃茄炒蛋", en: "Tomato & Egg Omelet with Minced Pork", price: "50.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings", cat: "MÓN SƯỜN / 排骨 / Pork Ribs", vn: "Sườn Non Rang Muối", cn: "椒鹽排骨", en: "Salt & Pepper Pork Ribs", price: "95.000đ" },
-        //{ cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Trứng Chiên Cà Chua Thịt Bằm", cn: "碎肉蕃茄炒蛋", en: "Tomato & Egg Omelet with Minced Pork", price: "50.000đ" },
-        //{ cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Khổ Qua Xào Trứng", cn: "苦瓜炒蛋", en: "Stir-fried Bitter Melon with Egg", price: "50.000đ" },
-        //{ cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Trứng Chiên Tôm", cn: "鮮蝦炒蛋", en: "Shrimp Omelet", price: "70.000đ" },
-        //{ cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Lòng Gà Trứng Non Xào Mướp", cn: "絲瓜炒雞雜", en: "Stir-fried Chicken Giblets with Luffa", price: "80.000đ" },
-        //{ cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Lòng Gà Trứng Non Xào Giá Hẹ", cn: "銀芽韭菜炒雞雜", en: "Stir-fried Chicken Giblets with Bean Sprouts", price: "80.000đ" },
-
+        { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Canh Rong Biển Thịt Bằm", cn: "碎肉紫菜湯", en: "Seaweed Soup with Minced Pork", price: "15k - 35k" },
+        { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Canh Cải Ngọt Thịt Bằm", cn: "碎肉小松菜湯", en: "Sweet Mustard Soup with Minced Pork", price: "15k - 35k" },
+        { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Canh Trứng Cà Chua Thịt Bằm", cn: "蕃茄蛋花湯", en: "Tomato & Egg Soup with Minced Pork", price: "15k - 35k" },
+        { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Canh Khổ Qua Thịt Bằm", cn: "碎肉苦瓜湯", en: "Bitter Melon Soup with Minced Pork", price: "15k - 35k" },
+        { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Canh Xà Lách Xoong Thịt Bằm", cn: "碎肉西洋菜湯", en: "Watercress Soup with Minced Pork", price: "15k - 35k" },
+        { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Đuôi Heo Hầm Củ Sen", cn: "蓮藕豬尾湯", en: "Pork Tail Soup with Lotus Root", price: "45k - 70k" },
+        { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Bao Tử Hầm Chân Gà", cn: "豬肚雞腳湯", en: "Pork Stomach Soup with Chicken Feet", price: "45k - 70k" },
+        { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Bắp Bò Tiềm Thuốc Bắc", cn: "藥材燉牛展湯", en: "Stewed Beef Shank with Herbal", price: "50k - 75k" },
+        { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Gà Ác Tiềm Thuốc Bắc", cn: "藥材燉烏雞湯", en: "Stewed Black Bone Chicken with Herbal", price: "55k - 85k" },
+        { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Súp Hải Sản", cn: "海鮮羹", en: "Seafood Soup", price: "40.000đ" },
+        { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Súp Cua Bong Bóng Cá", cn: "魚肚蟹肉羹", en: "Crab and Fish Maw Soup", price: "40.000đ" },
+        // --- THỨC UỐNG (1 nhóm con -> Không hiện menu phụ) ---
         //THỨC UỐNG
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Trà Đá", cn: "冰茶", en: "Iced Tea", price: "3.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Sữa Đậu Nành", cn: "豆漿", en: "Soya Milk", price: "10.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Sâm Lạnh", cn: "竹蔗茅根", en: "Herbal Coolant Tea", price: "12.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Rau Má", cn: "積雪草汁", en: "Pennywort Juice", price: "12.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Trà Tắc", cn: "金桔茶", en: "Calamansi Tea", price: "15.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Trà Đào", cn: "桃子茶", en: "Peach Tea", price: "15.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Nước Suối", cn: "礦泉水", en: "Mineral Water", price: "15.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Coca-Cola", cn: "可口可樂", en: "Coca-Cola", price: "15.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Pepsi", cn: "百事", en: "Pepsi", price: "15.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "7Up", cn: "七喜", en: "7Up", price: "15.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Sting Dâu", cn: "草莓斯特靈", en: "Sting Strawberry", price: "15.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Redbull", cn: "紅牛", en: "Redbull", price: "18.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Rau Câu Dừa", cn: "椰子凍", en: "Coconut Jelly", price: "8.000đ" },
-        { cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Bánh Flan", cn: "焦糖布丁", en: "Caramel Flan", price: "8.000đ" }
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Trà Đá", cn: "冰茶", en: "Iced Tea", price: "3.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Sữa Đậu Nành", cn: "豆漿", en: "Soya Milk", price: "10.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Sâm Lạnh", cn: "竹蔗茅根", en: "Herbal Coolant Tea", price: "12.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Rau Má", cn: "積雪草汁", en: "Pennywort Juice", price: "12.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Trà Tắc", cn: "金桔茶", en: "Calamansi Tea", price: "15.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Trà Đào", cn: "桃子茶", en: "Peach Tea", price: "15.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Nước Suối", cn: "礦泉水", en: "Mineral Water", price: "15.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Coca-Cola", cn: "可口可樂", en: "Coca-Cola", price: "15.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Pepsi", cn: "百事", en: "Pepsi", price: "15.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "7Up", cn: "七喜", en: "7Up", price: "15.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Sting Dâu", cn: "草莓斯特靈", en: "Sting Strawberry", price: "15.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Redbull", cn: "紅牛", en: "Redbull", price: "18.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Rau Câu Dừa", cn: "椰子凍", en: "Coconut Jelly", price: "8.000đ" },
+        { parent: "THỨC UỐNG / 飲料 / Drinks",cat: "THỨC UỐNG / 飲料 / Drinks", vn: "Bánh Flan", cn: "焦糖布丁", en: "Caramel Flan", price: "8.000đ" }
     ];
 
-    const container = document.getElementById('menu-container');
-    const navTabs = document.getElementById('nav-tabs');
-    // Tạo danh sách nhóm duy nhất
-    let categories = [...new Set(menuData.map(item => item.cat))];
 
-    // 1. Tạo các nút điều hướng nhanh
-    categories.forEach(cat => {
-        const link = document.createElement('a');
-        link.className = 'nav-link';
-        link.href = `#${cat}`;
-        link.innerText = cat;
-        navTabs.appendChild(link);
+    const navMain = document.getElementById('nav-main');
+    const navSub = document.getElementById('nav-sub');
+    const container = document.getElementById('menu-container');
+
+    // 1. Tạo Menu cấp 1 (Nhóm mẹ) - Hiện full ngôn ngữ
+    const parents = [...new Set(menuData.map(item => item.parent))];
+    parents.forEach(pName => {
+        const btn = document.createElement('div');
+        btn.className = 'nav-link';
+        btn.innerText = pName; // ĐÃ SỬA: Hiện đầy đủ 3 thứ tiếng
+        btn.onclick = () => selectParent(pName, btn);
+        navMain.appendChild(btn);
     });
 
-    // 2. Đổ dữ liệu menu
-    let currentCategory = "";
-    menuData.forEach(item => {
-        // Tạo tiêu đề nhóm nếu là nhóm mới
-        if (item.cat !== currentCategory) {
-            currentCategory = item.cat;
-            const title = document.createElement('div');
-            title.className = 'category-title';
-            title.id = currentCategory; // Đặt ID để link nhảy tới đúng chỗ
-            title.innerText = currentCategory;
-            container.appendChild(title);
+    function selectParent(pName, btn) {
+        document.querySelectorAll('.nav-main .nav-link').forEach(l => l.classList.remove('active'));
+        btn.classList.add('active');
+
+        const subs = [...new Set(menuData.filter(i => i.parent === pName).map(i => i.cat))];
+        navSub.innerHTML = '';
+        
+        // --- LOGIC HIỂN THỊ THÔNG MINH ---
+        if (subs.length > 1) {
+            navSub.style.display = 'flex';
+            // Khoảng cách cuộn lớn khi có 2 tầng menu
+            document.documentElement.style.setProperty('--scroll-padding', '195px');
+            
+            subs.forEach(sName => {
+                const sBtn = document.createElement('a');
+                sBtn.className = 'nav-link';
+                sBtn.href = `#${encodeURIComponent(sName)}`;
+                sBtn.innerText = sName; // ĐÃ SỬA: Hiện đầy đủ 3 thứ tiếng
+                navSub.appendChild(sBtn);
+            });
+        } else {
+            navSub.style.display = 'none';
+            // Khoảng cách cuộn nhỏ khi chỉ có 1 tầng menu
+            document.documentElement.style.setProperty('--scroll-padding', '135px');
         }
 
-        // Tạo card món ăn (chỉ có chữ)
+        const firstCatId = subs[0];
+        const element = document.getElementById(firstCatId);
+        if(element) element.scrollIntoView();
+    }
+
+    // 2. Đổ dữ liệu món ăn ra màn hình
+    let currentCat = "";
+    menuData.forEach(item => {
+        if (item.cat !== currentCat) {
+            currentCat = item.cat;
+            const title = document.createElement('div');
+            title.className = 'category-title';
+            title.id = currentCat;
+            title.innerText = currentCat;
+            container.appendChild(title);
+        }
         const div = document.createElement('div');
         div.className = 'menu-item';
         div.innerHTML = `
@@ -273,7 +341,13 @@
         `;
         container.appendChild(div);
     });
-</script>
 
+    // Tự động kích hoạt mục đầu tiên khi tải trang
+    window.onload = () => {
+        if(navMain.querySelector('.nav-link')) {
+            navMain.querySelector('.nav-link').click();
+        }
+    };
+</script>
 </body>
 </html>
