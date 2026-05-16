@@ -15,7 +15,7 @@
         
         /* 1. Header cố định */
         header { 
-            background: var(--primary); color: white; text-align: center; padding: 15px; 
+            background: var(--primary); color: yellow; text-align: center; padding: 15px; 
             border-bottom: 4px solid var(--secondary); position: sticky; top: 0; z-index: 1005; 
         }
         header h2 { margin: 0; font-size: 1.4rem; }
@@ -59,6 +59,7 @@
             background: white; padding: 12px 15px; margin-bottom: 10px; 
             border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
+        
         .item-info { display: flex; flex-direction: column; gap: 2px; }
         .name-vn { font-weight: 600; color: #222; font-size: 1rem; }
         .name-cn { color: #666; font-size: 0.85rem; }
@@ -183,64 +184,65 @@
         { parent: "RAU XÀO / 炒菜 / Stir-fried Vegetables",cat: "RAU XÀO / 炒菜 / Stir-fried Vegetables", vn: "Giá Hẹ Xào Hải Sản", cn: "銀芽韭菜炒海鮮", en: "Stir-fried Bean Sprouts & Chives with Seafood", price: "110.000đ" },
         // --- NHÓM THỨC ĂN THÊM (Nhiều nhóm con -> Tự động hiện menu phụ) ---
         // 5. TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Trứng Chiên Cà Chua Thịt Bằm", cn: "碎肉蕃茄炒蛋", en: "Tomato & Egg Omelet with Minced Pork", price: "50.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Khổ Qua Xào Trứng", cn: "苦瓜炒蛋", en: "Stir-fried Bitter Melon with Egg", price: "50.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Trứng Chiên Tôm", cn: "鮮蝦炒蛋", en: "Shrimp Omelet", price: "70.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Lòng Gà Trứng Non Xào Mướp", cn: "絲瓜炒雞雜", en: "Stir-fried Chicken Giblets with Luffa", price: "80.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Lòng Gà Trứng Non Xào Giá Hẹ", cn: "銀芽韭菜炒雞雜", en: "Stir-fried Chicken Giblets with Bean Sprouts", price: "80.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Cánh Gà Chiên Nước Mắm", cn: "魚露炸雞翅", en: "Fish Sauce Fried Chicken Wings", price: "90.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Trứng Chiên Cà Chua Thịt Bằm", cn: "碎肉蕃茄炒蛋", en: "Tomato & Egg Omelet with Minced Pork", price: "50.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Khổ Qua Xào Trứng", cn: "苦瓜炒蛋", en: "Stir-fried Bitter Melon with Egg", price: "50.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Trứng Chiên Tôm", cn: "鮮蝦炒蛋", en: "Shrimp Omelet", price: "70.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Lòng Gà Trứng Non Xào Mướp", cn: "絲瓜炒雞雜", en: "Stir-fried Chicken Giblets with Luffa", price: "80.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Lòng Gà Trứng Non Xào Giá Hẹ", cn: "銀芽韭菜炒雞雜", en: "Stir-fried Chicken Giblets with Bean Sprouts", price: "80.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "TRỨNG & GÀ / 雞蛋 & 雞 / Egg & Chicken", vn: "Cánh Gà Chiên Nước Mắm", cn: "魚露炸雞翅", en: "Fish Sauce Fried Chicken Wings", price: "90.000đ" },
 
         // 6. MÓN SƯỜN / 排骨 / Pork Ribs
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN SƯỜN / 排骨 / Pork Ribs", vn: "Sườn Non Rang Muối", cn: "椒鹽排骨", en: "Salt & Pepper Pork Ribs", price: "95.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN SƯỜN / 排骨 / Pork Ribs", vn: "Sườn Sốt Chua Ngọt", cn: "酸甜排骨", en: "Sweet & Sour Pork Ribs", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MÓN SƯỜN / 排骨 / Pork Ribs", vn: "Sườn Non Rang Muối", cn: "椒鹽排骨", en: "Salt & Pepper Pork Ribs", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MÓN SƯỜN / 排骨 / Pork Ribs", vn: "Sườn Sốt Chua Ngọt", cn: "酸甜排骨", en: "Sweet & Sour Pork Ribs", price: "95.000đ" },
 
         // 7. MÓN BÒ / 牛肉 / Beef
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Sate", cn: "沙嗲牛肉", en: "Stir-fried Beef with Sate", price: "90.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Hành Tây", cn: "洋蔥炒牛肉", en: "Stir-fried Beef with Onions", price: "90.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Cải Chua", cn: "酸菜炒牛肉", en: "Stir-fried Beef with Pickled Mustard", price: "90.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Khổ Qua", cn: "苦瓜炒牛肉", en: "Stir-fried Beef with Bitter Melon", price: "90.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Giá Hẹ", cn: "銀芽韭菜炒牛肉", en: "Stir-fried Beef with Bean Sprouts & Chives", price: "90.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Bông Cải", cn: "綠菜花炒牛肉", en: "Stir-fried Beef with Broccoli", price: "95.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Cải Bó Xôi", cn: "菠菜炒牛肉", en: "Stir-fried Beef with Spinach", price: "95.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Lúc Lắc Khoai Tây", cn: "牛肉粒和炸薯條", en: "Shaking Beef with French Fries", price: "95.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Gân Bò Xào Sate", cn: "牛筋沙嗲", en: "Stir-fried Beef Tendon with Sate", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Sate", cn: "沙嗲牛肉", en: "Stir-fried Beef with Sate", price: "90.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Hành Tây", cn: "洋蔥炒牛肉", en: "Stir-fried Beef with Onions", price: "90.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Cải Chua", cn: "酸菜炒牛肉", en: "Stir-fried Beef with Pickled Mustard", price: "90.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Khổ Qua", cn: "苦瓜炒牛肉", en: "Stir-fried Beef with Bitter Melon", price: "90.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Giá Hẹ", cn: "銀芽韭菜炒牛肉", en: "Stir-fried Beef with Bean Sprouts & Chives", price: "90.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Bông Cải", cn: "綠菜花炒牛肉", en: "Stir-fried Beef with Broccoli", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Xào Cải Bó Xôi", cn: "菠菜炒牛肉", en: "Stir-fried Beef with Spinach", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Bò Lúc Lắc Khoai Tây", cn: "牛肉粒和炸薯條", en: "Shaking Beef with French Fries", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MÓN BÒ / 牛肉 / Beef", vn: "Gân Bò Xào Sate", cn: "牛筋沙嗲", en: "Stir-fried Beef Tendon with Sate", price: "95.000đ" },
 
         // 8. CẬT HEO / 豬腰 / Pork Kidney
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Xào Sate", cn: "沙嗲炒豬腰", en: "Stir-fried Pork Kidney with Sate", price: "95.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Xào Hành Gừng", cn: "姜蔥炒豬腰", en: "Stir-fried Pork Kidney with Ginger & Onions", price: "95.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Xào Bông Cải", cn: "綠菜花炒豬腰", en: "Stir-fried Pork Kidney with Broccoli", price: "95.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Cháy Tỏi", cn: "蒜香炒豬腰", en: "Stir-fried Pork Kidney with Garlic", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Xào Sate", cn: "沙嗲炒豬腰", en: "Stir-fried Pork Kidney with Sate", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Xào Hành Gừng", cn: "姜蔥炒豬腰", en: "Stir-fried Pork Kidney with Ginger & Onions", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Xào Bông Cải", cn: "綠菜花炒豬腰", en: "Stir-fried Pork Kidney with Broccoli", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "CẬT HEO / 豬腰 / Pork Kidney", vn: "Cật Heo Cháy Tỏi", cn: "蒜香炒豬腰", en: "Stir-fried Pork Kidney with Garlic", price: "95.000đ" },
 
         // 9. MỰC / 鮮魷 / Squid
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Chiên Giòn", cn: "脆炸鮮魷", en: "Crispy Fried Squid", price: "100.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Sate", cn: "沙嗲炒鮮魷", en: "Stir-fried Squid with Sate", price: "100.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Hành Cần", cn: "芹菜炒鮮魷", en: "Stir-fried Squid with Celery", price: "100.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Dưa Leo", cn: "黃瓜炒鮮魷", en: "Stir-fried Squid with Cucumber", price: "100.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Chua Ngọt", cn: "酸甜炒鮮魷", en: "Sweet & Sour Stir-fried Squid", price: "100.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Rang Muối", cn: "椒鹽鮮魷", en: "Salt & Pepper Squid", price: "110.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Chiên Giòn", cn: "脆炸鮮魷", en: "Crispy Fried Squid", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Sate", cn: "沙嗲炒鮮魷", en: "Stir-fried Squid with Sate", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Hành Cần", cn: "芹菜炒鮮魷", en: "Stir-fried Squid with Celery", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Dưa Leo", cn: "黃瓜炒鮮魷", en: "Stir-fried Squid with Cucumber", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Xào Chua Ngọt", cn: "酸甜炒鮮魷", en: "Sweet & Sour Stir-fried Squid", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "MỰC / 鮮魷 / Squid", vn: "Mực Rang Muối", cn: "椒鹽鮮魷", en: "Salt & Pepper Squid", price: "110.000đ" },
 
         // 10. TÔM / 鮮蝦 / Shrimp
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TÔM / 鮮蝦 / Shrimp", vn: "Tôm Lăn Bột", cn: "吉利蝦", en: "Fried Breaded Shrimp", price: "100.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TÔM / 鮮蝦 / Shrimp", vn: "Tôm Xào Sate", cn: "沙嗲炒鮮蝦", en: "Stir-fried Shrimp with Sate", price: "100.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "TÔM / 鮮蝦 / Shrimp", vn: "Tôm Rang Muối", cn: "椒鹽鮮蝦", en: "Salt & Pepper Shrimp", price: "110.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "TÔM / 鮮蝦 / Shrimp", vn: "Tôm Lăn Bột", cn: "吉利蝦", en: "Fried Breaded Shrimp", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "TÔM / 鮮蝦 / Shrimp", vn: "Tôm Xào Sate", cn: "沙嗲炒鮮蝦", en: "Stir-fried Shrimp with Sate", price: "100.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "TÔM / 鮮蝦 / Shrimp", vn: "Tôm Rang Muối", cn: "椒鹽鮮蝦", en: "Salt & Pepper Shrimp", price: "110.000đ" },
 
         // 11. ẾCH / 田雞 / Frog
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Chiên Giòn", cn: "脆炸田雞", en: "Crispy Fried Frog", price: "95.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Xào Sate", cn: "沙嗲炒田雞", en: "Stir-fried Frog with Sate", price: "95.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Xào Mướp", cn: "絲瓜炒田雞", en: "Stir-fried Frog with Luffa", price: "95.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Chiên Nước Mắm", cn: "魚露炸田雞", en: "Fish Sauce Fried Frog", price: "95.000đ" },
-        { parent: "THỨC ĂN THÊM / 加菜 / Extra Toppings",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Rang Muối", cn: "椒鹽田雞", en: "Salt & Pepper Frog", price: "105.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Chiên Giòn", cn: "脆炸田雞", en: "Crispy Fried Frog", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Xào Sate", cn: "沙嗲炒田雞", en: "Stir-fried Frog with Sate", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Xào Mướp", cn: "絲瓜炒田雞", en: "Stir-fried Frog with Luffa", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Chiên Nước Mắm", cn: "魚露炸田雞", en: "Fish Sauce Fried Frog", price: "95.000đ" },
+        { parent: "THỨC ĂN THÊM / 加菜 / Side Dishes",cat: "ẾCH / 田雞 / Frog", vn: "Ếch Rang Muối", cn: "椒鹽田雞", en: "Salt & Pepper Frog", price: "105.000đ" },
 
         // 12. ĂN CHAY / 素食 / Vegetarian
-        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Cơm Trắng Xào Chay", cn: "羅漢齋配米飯", en: "Vegetarian Stir-fry with Rice", price: "55.000đ" },
-        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Cơm Chiên Xào Chay", cn: "羅漢齋炒飯", en: "Vegetarian Fried Rice", price: "55.000đ" },
-        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Bún Gạo Xào Chay", cn: "羅漢齋炒米粉", en: "Vegetarian Stir-fried Rice Vermicelli", price: "55.000đ" },
-        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Hủ Tiếu Xào Chay", cn: "羅漢齋炒河粉", en: "Vegetarian Stir-fried Rice Noodles", price: "55.000đ" },
-        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Hủ Tiếu Áp Chảo Xào Chay", cn: "羅漢齋乾炒河粉", en: "Vegetarian Pan-fried Rice Noodles", price: "55.000đ" },
-        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Mì Mềm Xào Chay", cn: "羅漢齋炒麵", en: "Vegetarian Soft Egg Noodles", price: "55.000đ" },
-        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Mì Giòn Xào Chay", cn: "羅漢齋炸麵", en: "Vegetarian Crispy Egg Noodles", price: "55.000đ" },
-        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Miến Xào Chay", cn: "羅漢齋炒粉絲", en: "Vegetarian Stir-fried Glass Noodles", price: "55.000đ" },
-        { parent: "ĂN CHAY / 素食 / Vegetarian",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Đậu Hủ Xào Thập Cẩm Chay", cn: "什錦羅漢齋", en: "Combination Vegetarian Tofu", price: "80.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian Dishes",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Cơm Trắng Xào Chay", cn: "羅漢齋配米飯", en: "Vegetarian Stir-fry with Rice", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian Dishes",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Cơm Chiên Xào Chay", cn: "羅漢齋炒飯", en: "Vegetarian Fried Rice", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian Dishes",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Cơm Chiên Xào Chay", cn: "羅漢齋炒飯", en: "Vegetarian Fried Rice", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian Dishes",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Bún Gạo Xào Chay", cn: "羅漢齋炒米粉", en: "Vegetarian Stir-fried Rice Vermicelli", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian Dishes",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Hủ Tiếu Xào Chay", cn: "羅漢齋炒河粉", en: "Vegetarian Stir-fried Rice Noodles", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian Dishes",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Hủ Tiếu Áp Chảo Xào Chay", cn: "羅漢齋乾炒河粉", en: "Vegetarian Pan-fried Rice Noodles", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian Dishes",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Mì Mềm Xào Chay", cn: "羅漢齋炒麵", en: "Vegetarian Soft Egg Noodles", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian Dishes",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Mì Giòn Xào Chay", cn: "羅漢齋炸麵", en: "Vegetarian Crispy Egg Noodles", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian Dishes",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Miến Xào Chay", cn: "羅漢齋炒粉絲", en: "Vegetarian Stir-fried Glass Noodles", price: "55.000đ" },
+        { parent: "ĂN CHAY / 素食 / Vegetarian Dishes",cat: "ĂN CHAY / 素食 / Vegetarian", vn: "Đậu Hủ Xào Thập Cẩm Chay", cn: "什錦羅漢齋", en: "Combination Vegetarian Tofu", price: "80.000đ" },
         
         // NHÓM SÚP (Gồm Canh Nấu, Canh Hầm và Súp)
         { parent: "SÚP / 湯 / Soup",cat: "SÚP / 湯 / Soup", vn: "Canh Rong Biển Thịt Bằm", cn: "碎肉紫菜湯", en: "Seaweed Soup with Minced Pork", price: "15k - 35k" },
